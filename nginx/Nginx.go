@@ -70,7 +70,6 @@ func Add() {
 		fmt.Printf("Process end")
 		return
 	}
-	fmt.Printf("confirmation : %q\n", confirmation)
 
     Helper.Clear_screen()
 
@@ -105,5 +104,42 @@ func Add() {
 }
 
 func Remove() {
-    fmt.Println("nginx remove")
+	files, err := Service.Read_directory("/etc/nginx/sites-available")
+	if err != nil {
+		fmt.Printf("Process end")
+		return
+	}
+
+	prompt := promptui.Select{
+		Label: "Which NGINX Configuration files?",
+		Items: files,
+	}
+	_, selected_file, err := prompt.Run()
+
+	if err != nil {
+		fmt.Printf("%q\n", err)
+		return
+	}
+
+	prompt_confirmation := promptui.Prompt{
+		Label: "Are you double confirm sure to delete this file?",
+		IsConfirm: true,
+	}
+	confirmation, err := prompt_confirmation.Run()
+	if err != nil {
+		fmt.Printf("Process end")
+		return
+	}
+
+    if(confirmation == "y") {
+		file_name := "/etc/nginx/sites-enabled/"+selected_file
+		Service.Remove_file(file_name)
+
+		file_name = "/etc/nginx/sites-available/"+selected_file
+		Service.Remove_file(file_name)
+		
+		fmt.Printf("NGINX configuration file (%q) deleted\n", file_name)
+    } else {
+		fmt.Printf("Process end")
+	}
 }

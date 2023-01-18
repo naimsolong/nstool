@@ -3,17 +3,25 @@ package Helper
 import (
     "fmt"
     "io"
+	"io/ioutil"
 	"os"
     "os/exec"
+	
+	"log"
+	"strings"
 )
 
 func Clear_screen() {
-    c := exec.Command("clear")
+	Run_cmd("clear")
+}
+
+func Run_cmd(command string) {
+    c := exec.Command(command)
     c.Stdout = os.Stdout
     c.Run()
 }
 
-func Copy(src, dst string) error {
+func Copy_file(src, dst string) error {
 	sourceFileStat, err := os.Stat(src)
 	if err != nil {
 		return err
@@ -61,22 +69,22 @@ func Copy(src, dst string) error {
 	return err
 }
 
-// func Replace_string_in_file(file, strings, replace) {
-//     input, err := ioutil.ReadFile(file)
-//     if err != nil {
-//             log.Fatalln(err)
-//     }
+func Replace_string_in_file(file string, search string, replace string) {
+    input, err := ioutil.ReadFile(file)
+    if err != nil {
+		log.Fatalln(err)
+    }
 
-//     lines := strings.Split(string(input), "\n")
+    lines := strings.Split(string(input), "\n")
 
-//     for i, line := range lines {
-//             if strings.Contains(line, "]") {
-//                     lines[i] = replace
-//             }
-//     }
-//     output := strings.Join(lines, "\n")
-//     err = ioutil.WriteFile(file, []byte(output), 0644)
-//     if err != nil {
-//             log.Fatalln(err)
-//     }
-// }
+    for i, line := range lines {
+		if strings.Contains(line, search) {
+			lines[i] = strings.ReplaceAll(lines[i], search, replace)
+		}
+    }
+    output := strings.Join(lines, "\n")
+    err = ioutil.WriteFile(file, []byte(output), 0644)
+    if err != nil {
+		log.Fatalln(err)
+    }
+}

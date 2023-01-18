@@ -7,7 +7,6 @@ import (
 	"naimsolong/nstool/nginx"
 	"naimsolong/nstool/env"
 
-	// "github.com/manifoldco/promptui"
     "github.com/urfave/cli/v2"
 )
 
@@ -18,13 +17,14 @@ import (
  */
 func main() {
     app := &cli.App{
+        Usage: "Custom tool for local development",
         Commands: []*cli.Command{
             {
 				Name:  "nginx:add",
                 Category: "NGINX",
 				Usage: "add a nginx configuration files",
 				Action: func(cCtx *cli.Context) error {
-					Gonginx.Nginx_add()
+					Nginx.Add()
 					return nil
 				},
 			},
@@ -33,7 +33,7 @@ func main() {
                 Category: "NGINX",
 				Usage: "remove a nginx configuration files",
 				Action: func(cCtx *cli.Context) error {
-					Gonginx.Nginx_remove()
+					Nginx.Remove()
 					return nil
 				},
             },
@@ -43,7 +43,7 @@ func main() {
                 Category: "Laravel Environment",
 				Usage: "change env values based on template",
 				Action: func(cCtx *cli.Context) error {
-					Goenv.Env_change()
+					Env.Change()
 					return nil
 				},
 			},
@@ -52,7 +52,7 @@ func main() {
                 Category: "Laravel Environment",
 				Usage: "add new a env template",
 				Action: func(cCtx *cli.Context) error {
-					Goenv.Env_add_template()
+					Env.Add_template()
 					return nil
 				},
 			},
@@ -61,7 +61,7 @@ func main() {
                 Category: "Laravel Environment",
 				Usage: "remove a env template",
 				Action: func(cCtx *cli.Context) error {
-					Goenv.Env_remove_template()
+					Env.Remove_template()
 					return nil
 				},
             },

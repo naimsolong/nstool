@@ -1,4 +1,4 @@
-package Gonginx
+package Nginx
 
 import (
     "fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
-func Nginx_add() {
+func Add() {
 	prompt_1 := promptui.Prompt{
 		Label: "URL",
 	}
@@ -85,6 +85,6 @@ func Nginx_add() {
     }
 }
 
-func Nginx_remove() {
+func Remove() {
     fmt.Println("nginx remove")
 }

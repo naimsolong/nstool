@@ -1,17 +1,17 @@
-package Goenv
+package Env
 
 import (
     "fmt"
 )
 
-func Env_change() {
+func Change() {
     fmt.Println("env change")
 }
 
-func Env_add_template() {
+func Add_template() {
     fmt.Println("env add template")
 }
 
-func Env_remove_template() {
+func Remove_template() {
     fmt.Println("env remove template")
 }

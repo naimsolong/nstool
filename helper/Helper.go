@@ -69,6 +69,20 @@ func Copy_file(src, dst string) error {
 	return err
 }
 
+func Show_content(file string) {
+    input, err := ioutil.ReadFile(file)
+    if err != nil {
+		log.Fatalln(err)
+    }
+
+    lines := strings.Split(string(input), "\n")
+
+	fmt.Println("\n")
+    for i := range lines {
+		fmt.Println(lines[i])
+    }
+}
+
 func Replace_string_in_file(file string, search string, replace string) {
     input, err := ioutil.ReadFile(file)
     if err != nil {

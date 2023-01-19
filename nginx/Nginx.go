@@ -12,6 +12,31 @@ import (
 
 var octane_port string 
 
+
+func List() {
+	files, err := Service.Read_directory("/etc/nginx/sites-available")
+	if err != nil {
+		fmt.Printf("Process end")
+		return
+	}
+
+	prompt := promptui.Select{
+		Label: "Which NGINX Configuration files?",
+		Items: files,
+	}
+	_, selected_file, err := prompt.Run()
+
+	if err != nil {
+		fmt.Printf("%q\n", err)
+		return
+	}
+	
+	file_name := "/etc/nginx/sites-enabled/"+selected_file
+	Helper.Show_content(file_name)
+
+	return
+}
+
 func Add() {
 	prompt_1 := promptui.Prompt{
 		Label: "Using which URL?",
@@ -84,7 +109,7 @@ func Add() {
 		}
 
 		Helper.Replace_string_in_file(destination, "{{URL}}", url)
-		Helper.Replace_string_in_file(destination, "{{PROJECT_PATH}}", path)
+		Helper.Replace_string_in_file(destination, "{{PROJECT_PATH}}", path+"/public")
 
 		if(octane_flag == "y") {
 			Helper.Replace_string_in_file(destination, "{{OCTANE_PORT}}", octane_port)
@@ -93,7 +118,8 @@ func Add() {
 		}
 
 		Service.Create_symlink(destination, symlink)
-		// Service.Reload_restart_nginx()
+
+		Service.Reload_restart_nginx()
 
         fmt.Printf("NGINX configuration file (%q) added\n", destination)
     } else {
@@ -138,8 +164,12 @@ func Remove() {
 		file_name = "/etc/nginx/sites-available/"+selected_file
 		Service.Remove_file(file_name)
 		
+		Service.Reload_restart_nginx()
+		
 		fmt.Printf("NGINX configuration file (%q) deleted\n", file_name)
     } else {
 		fmt.Printf("Process end")
 	}
+	
+	return
 }

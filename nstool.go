@@ -28,9 +28,18 @@ func main() {
 				},
 			},
             {
+				Name:  "nginx:show",
+                Category: "NGINX",
+				Usage: "Show the existing NGINX configuration files",
+				Action: func(cCtx *cli.Context) error {
+					Nginx.List()
+					return nil
+				},
+			},
+            {
 				Name:  "nginx:add",
                 Category: "NGINX",
-				Usage: "Add a standard Laravel NGINX configuration files into sites-available directory",
+				Usage: "Add a standard Laravel NGINX configuration files (require sudo)",
 				Action: func(cCtx *cli.Context) error {
 					Nginx.Add()
 					return nil
@@ -39,7 +48,7 @@ func main() {
 			{
 				Name:  "nginx:remove",
                 Category: "NGINX",
-				Usage: "Remove a Laravel NGINX configuration files from sites-available directory",
+				Usage: "Remove a Laravel NGINX configuration files (require sudo)",
 				Action: func(cCtx *cli.Context) error {
 					Nginx.Remove()
 					return nil

@@ -1,7 +1,7 @@
 package Validator
 
 import (
-    "errors"
+	"errors"
 )
 
 func Not_empty_string(input string) error {

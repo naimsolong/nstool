@@ -1,38 +1,47 @@
 package Service
 
 import (
+	"io/ioutil"
+	"log"
 	"os"
-    "io/ioutil"
-    "log"
-
-	"naimsolong/nstool/helper"
+	"os/exec"
 )
 
 var directory_array []string
 
 func Create_symlink(path string, target string) {
-    os.Symlink(target, target)
+	os.Symlink(target, target)
 }
 
 func Reload_restart_nginx() {
-	Helper.Run_cmd("sudo systemctl reload nginx")
-	Helper.Run_cmd("sudo systemctl restart nginx")
+	c_1 := exec.Command("sudo", "systemctl", "reload", "nginx")
+	c_1.Stdout = os.Stdout
+	c_1.Run()
+
+	c_2 := exec.Command("sudo", "systemctl", "restart", "nginx")
+	c_2.Stdout = os.Stdout
+	c_2.Run()
 }
 
 func Reload_restart_supervisor() {
-	Helper.Run_cmd("sudo systemctl reload supervisor")
-	Helper.Run_cmd("sudo systemctl restart supervisor")
+	c_1 := exec.Command("sudo", "systemctl", "reload", "supervisor")
+	c_1.Stdout = os.Stdout
+	c_1.Run()
+
+	c_2 := exec.Command("sudo", "systemctl", "restart", "supervisor")
+	c_2.Stdout = os.Stdout
+	c_2.Run()
 }
 
 func Read_directory(dirname string) ([]string, error) {
-    files, err := ioutil.ReadDir(dirname)
-    
+	files, err := ioutil.ReadDir(dirname)
+
 	if err != nil {
-        log.Fatal(err)
-    } else {
+		log.Fatal(err)
+	} else {
 		for _, file := range files {
-			if(!file.IsDir()) {
-				directory_array = append(directory_array, file.Name(),)
+			if !file.IsDir() {
+				directory_array = append(directory_array, file.Name())
 			}
 		}
 	}

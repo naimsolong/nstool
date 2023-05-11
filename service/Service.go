@@ -10,7 +10,7 @@ import (
 var directory_array []string
 
 func Create_symlink(path string, target string) {
-	os.Symlink(target, target)
+	os.Symlink(path, target)
 }
 
 func Reload_restart_nginx() {

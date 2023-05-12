@@ -5,6 +5,7 @@ import (
 	"os"
 
 	Helper "naimsolong/nstool/helper"
+	Init "naimsolong/nstool/init"
 	Service "naimsolong/nstool/service"
 	Validator "naimsolong/nstool/validation"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func List() bool {
-	files, err := Service.Read_directory("/etc/nginx/sites-available")
+	files, err := Service.Read_directory(Init.Get_value("Nginx_Sites_Available_Path"))
 	if err != nil {
 		fmt.Printf("Process end\n")
 		return false
@@ -29,7 +30,7 @@ func List() bool {
 		return false
 	}
 
-	file_name := "/etc/nginx/sites-enabled/" + selected_file
+	file_name := Init.Get_value("Nginx_Sites_Enable_Path") + "/" + selected_file
 	Helper.Show_content(file_name)
 
 	return true
@@ -46,14 +47,14 @@ func Add() bool {
 		return false
 	}
 	
-	if _, err := os.Stat("/etc/nginx/sites-available/" + url)
+	if _, err := os.Stat(Init.Get_value("Nginx_Sites_Available_Path") + "/" + url)
 	err == nil {
 		fmt.Printf("NGINX Configuration exist!\n")
 		return false
 	}
 
 	prompt_2 := promptui.Prompt{
-		Label:    "On which Project Path?",
+		Label:    "Project Name?",
 		Validate: Validator.Not_empty_string,
 	}
 	path, err := prompt_2.Run()
@@ -118,7 +119,7 @@ func Add() bool {
 	Helper.Clear_screen()
 
 	fmt.Printf("URL : %q\n", url)
-	fmt.Printf("Project Path : %q\n", path)
+	fmt.Printf("Project Name : %q\n", path)
 	fmt.Printf("PHP Version : %q\n", php_version)
 	fmt.Printf("Laravel Version : %q\n", laravel_version)
 	fmt.Printf("Octane Support : %q\n", octane_flag)
@@ -143,8 +144,8 @@ func Add() bool {
 		} else {
 			stub_file = "./stub/nginx.laravel.stub"
 		}
-		destination := "/etc/nginx/sites-available/" + url
-		symlink := "/etc/nginx/sites-enabled/" + url
+		destination := Init.Get_value("Nginx_Sites_Available_Path") + "/" + url
+		symlink := Init.Get_value("Nginx_Sites_Enable_Path") + "/" + url
 
 		copy_err := Helper.Copy_file(stub_file, destination)
 		if copy_err != nil {
@@ -152,7 +153,7 @@ func Add() bool {
 		}
 
 		Helper.Replace_string_in_file(destination, "{{URL}}", url)
-		Helper.Replace_string_in_file(destination, "{{PROJECT_PATH}}", path+"/public")
+		Helper.Replace_string_in_file(destination, "{{PROJECT_PATH}}", Init.Get_value("Project_Path") + "/" + path + "/public")
 
 		if octane_flag == "Yes" {
 			fmt.Printf("Write Octane")
@@ -176,7 +177,7 @@ func Add() bool {
 }
 
 func Remove() bool {
-	files, err := Service.Read_directory("/etc/nginx/sites-available")
+	files, err := Service.Read_directory(Init.Get_value("Nginx_Sites_Available_Path"))
 	if err != nil {
 		fmt.Printf("Process end\n")
 		return false
@@ -204,10 +205,10 @@ func Remove() bool {
 	}
 
 	if confirmation == "Yes" {
-		file_name := "/etc/nginx/sites-enabled/" + selected_file
+		file_name := Init.Get_value("Nginx_Sites_Enable_Path") + "/" + selected_file
 		Service.Remove_file(file_name)
 
-		file_name = "/etc/nginx/sites-available/" + selected_file
+		file_name = Init.Get_value("Nginx_Sites_Available_Path") + "/" + selected_file
 		Service.Remove_file(file_name)
 
 		Service.Reload_restart_nginx()

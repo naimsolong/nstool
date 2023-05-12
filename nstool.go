@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	Init "naimsolong/nstool/init"
 	Env "naimsolong/nstool/env"
 	Nginx "naimsolong/nstool/nginx"
 
@@ -19,6 +20,14 @@ func main() {
 	app := &cli.App{
 		Usage: "Custom tool for Laravel local development",
 		Commands: []*cli.Command{
+			{
+				Name:     "init",
+				Usage:    "Initiate nstool configuration files",
+				Action: func(cCtx *cli.Context) error {
+					Init.Start(true)
+					return nil
+				},
+			},
 			{
 				Name:     "nginx:show",
 				Category: "NGINX",
@@ -48,16 +57,34 @@ func main() {
 			},
 
 			{
-				Name:     "env:change",
+				Name:     "env:copy",
 				Category: "Laravel Environment",
-				Usage:    "Change .env values based on template",
+				Usage:    "Copy .env from template or existing .env.example",
 				Action: func(cCtx *cli.Context) error {
 					Env.Change()
 					return nil
 				},
 			},
 			{
-				Name:     "env:add-template",
+				Name:     "env:value",
+				Category: "Laravel Environment",
+				Usage:    "Change .env values",
+				Action: func(cCtx *cli.Context) error {
+					Env.Change()
+					return nil
+				},
+			},
+			{
+				Name:     "env:template-show",
+				Category: "Laravel Environment",
+				Usage:    "Show list of .env template",
+				Action: func(cCtx *cli.Context) error {
+					Env.Add_template()
+					return nil
+				},
+			},
+			{
+				Name:     "env:template-add",
 				Category: "Laravel Environment",
 				Usage:    "Add new a .env template",
 				Action: func(cCtx *cli.Context) error {
@@ -66,7 +93,7 @@ func main() {
 				},
 			},
 			{
-				Name:     "env:remove-template",
+				Name:     "env:template-remove",
 				Category: "Laravel Environment",
 				Usage:    "Remove a .env template",
 				Action: func(cCtx *cli.Context) error {

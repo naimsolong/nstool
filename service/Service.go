@@ -33,7 +33,7 @@ func Reload_restart_supervisor() {
 	c_2.Run()
 }
 
-func Read_directory(dirname string) ([]string, error) {
+func Read_files(dirname string) ([]string, error) {
 	files, err := ioutil.ReadDir(dirname)
 
 	if err != nil {
@@ -43,6 +43,20 @@ func Read_directory(dirname string) ([]string, error) {
 			if !file.IsDir() {
 				directory_array = append(directory_array, file.Name())
 			}
+		}
+	}
+
+	return directory_array, err
+}
+
+func Read_directory(dirname string) ([]string, error) {
+	files, err := ioutil.ReadDir(dirname)
+
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		for _, file := range files {
+			directory_array = append(directory_array, file.Name())
 		}
 	}
 

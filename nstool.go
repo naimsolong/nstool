@@ -61,7 +61,7 @@ func main() {
 				Category: "Laravel Environment",
 				Usage:    "Copy .env from template or existing .env.example",
 				Action: func(cCtx *cli.Context) error {
-					Env.Change()
+					Env.Copy()
 					return nil
 				},
 			},
@@ -71,33 +71,6 @@ func main() {
 				Usage:    "Change .env values",
 				Action: func(cCtx *cli.Context) error {
 					Env.Change()
-					return nil
-				},
-			},
-			{
-				Name:     "env:template-show",
-				Category: "Laravel Environment",
-				Usage:    "Show list of .env template",
-				Action: func(cCtx *cli.Context) error {
-					Env.Add_template()
-					return nil
-				},
-			},
-			{
-				Name:     "env:template-add",
-				Category: "Laravel Environment",
-				Usage:    "Add new a .env template",
-				Action: func(cCtx *cli.Context) error {
-					Env.Add_template()
-					return nil
-				},
-			},
-			{
-				Name:     "env:template-remove",
-				Category: "Laravel Environment",
-				Usage:    "Remove a .env template",
-				Action: func(cCtx *cli.Context) error {
-					Env.Remove_template()
 					return nil
 				},
 			},

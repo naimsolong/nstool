@@ -31,6 +31,10 @@ func Default() ConfigValue {
 	}
 }
 
+func Get_init_path() string {
+	return init_path
+}
+
 func Start(delete bool) bool {
 	_, err := os.Stat(init_path)
 	if err != nil {

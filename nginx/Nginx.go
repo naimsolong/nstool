@@ -13,7 +13,7 @@ import (
 )
 
 func List() bool {
-	files, err := Service.Read_directory(Init.Get_value("Nginx_Sites_Available_Path"))
+	files, err := Service.Read_files(Init.Get_value("Nginx_Sites_Available_Path"))
 	if err != nil {
 		fmt.Printf("Process end\n")
 		return false
@@ -177,7 +177,7 @@ func Add() bool {
 }
 
 func Remove() bool {
-	files, err := Service.Read_directory(Init.Get_value("Nginx_Sites_Available_Path"))
+	files, err := Service.Read_files(Init.Get_value("Nginx_Sites_Available_Path"))
 	if err != nil {
 		fmt.Printf("Process end\n")
 		return false

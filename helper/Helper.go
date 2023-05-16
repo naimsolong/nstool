@@ -73,10 +73,28 @@ func Show_content(file string) {
 
 	lines := strings.Split(string(input), "\n")
 
-	fmt.Println("\n")
 	for i := range lines {
-		fmt.Println(lines[i])
+		fmt.Println(lines[i]+"\n")
 	}
+}
+
+func Get_content(file string) []string {
+	var slice_array []string
+
+	input, err := ioutil.ReadFile(file)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	lines := strings.Split(string(input), "\n")
+
+	for i := range lines {
+		if lines[i] != "" {
+			slice_array = append(slice_array, lines[i],)
+		}
+	}
+
+	return slice_array
 }
 
 func Replace_string_in_file(file string, search string, replace string) {
